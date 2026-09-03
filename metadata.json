@@ -2,5 +2,7 @@
   "name": "初心者向けHTMLビルダー",
   "description": "HTML知識ゼロでもドラッグ＆ドロップで複数ページサイトを作成し、HTML生成からサーバー公開ガイドまでサポートする初心者向けWebビルダー",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
