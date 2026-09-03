@@ -9,6 +9,7 @@ import { GenreSelector } from './components/GenreSelector';
 import { MainEditor } from './components/Editor/MainEditor';
 import { LegalModal } from './components/Legal/LegalModal';
 import { GuideViewerModal } from './components/Guides/GuideViewerModal';
+import { ContentProtection } from './components/Protection/ContentProtection';
 import { FileText, ArrowRight, RotateCcw } from 'lucide-react';
 
 export default function App() {
@@ -111,6 +112,9 @@ export default function App() {
           onClose={() => setShowGlobalGuide(false)}
         />
       )}
+
+      {/* Global Content & Source Protection */}
+      <ContentProtection />
 
     </div>
   );

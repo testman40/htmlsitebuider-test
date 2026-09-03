@@ -9,6 +9,7 @@ import {
   Sliders, 
   Save, 
   Check, 
+  Loader2,
   AlertCircle, 
   Plus, 
   FileText, 
@@ -93,14 +94,17 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
     return null;
   });
 
-  // Save notification toast state
-  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
-  const [saveMessage, setSaveMessage] = useState<string>('');
+  // Autosave status state ('saved' | 'saving' | 'error')
+  const [saveStatus, setSaveStatus] = useState<'saving' | 'saved' | 'error'>('saved');
+  const [lastSavedTime, setLastSavedTime] = useState<string>(() => {
+    const d = new Date();
+    return `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+  });
 
   // Target block for image picker
   const [imagePickerTargetBlockId, setImagePickerTargetBlockId] = useState<string | null>(null);
 
-  // Autosave interval (Section 6.6: 一定間隔・ページ切り替え時のオートセーブ)
+  // Autosave interval (Section 6.6: 一定間隔・変更検知時のオートセーブ)
   const isInitialMount = useRef(true);
   useEffect(() => {
     if (isInitialMount.current) {
@@ -108,9 +112,12 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
       return;
     }
 
+    // Mark as saving immediately when user edits
+    setSaveStatus('saving');
+
     const timer = setTimeout(() => {
-      handleSaveSite(true); // Silent autosave
-    }, 2500);
+      handleSaveSite(true);
+    }, 1200);
 
     return () => clearTimeout(timer);
   }, [site]);
@@ -129,15 +136,16 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
       localStorage.setItem('webbuilder_site_' + site.site_id, JSON.stringify(updatedSite));
       localStorage.setItem('webbuilder_last_site_id', site.site_id);
 
-      setSaveStatus('saved');
-      setSaveMessage(isAuto ? '自動保存済み' : '保存が完了しました');
+      const d = new Date();
+      const timeStr = `${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}:${d.getSeconds().toString().padStart(2, '0')}`;
+      setLastSavedTime(timeStr);
+
       setTimeout(() => {
-        setSaveStatus('idle');
-      }, 2500);
+        setSaveStatus('saved');
+      }, isAuto ? 300 : 150);
     } catch (err) {
       console.error(err);
       setSaveStatus('error');
-      setSaveMessage('保存に失敗しました');
     }
   };
 
@@ -431,24 +439,42 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
             />
           </div>
 
-          {/* Autosave badge */}
-          {saveStatus === 'saving' && (
-            <span className="text-[11px] text-gray-400 font-medium animate-pulse hidden md:inline">
-              保存中...
-            </span>
-          )}
-          {saveStatus === 'saved' && (
-            <span className="text-[11px] text-emerald-600 font-semibold flex items-center gap-1 hidden md:inline">
-              <Check className="w-3.5 h-3.5" />
-              <span>{saveMessage}</span>
-            </span>
-          )}
-          {saveStatus === 'error' && (
-            <span className="text-[11px] text-rose-600 font-semibold flex items-center gap-1 hidden md:inline">
-              <AlertCircle className="w-3.5 h-3.5" />
-              <span>{saveMessage}</span>
-            </span>
-          )}
+          {/* Autosave Status Indicator */}
+          <button
+            type="button"
+            onClick={() => handleSaveSite(false)}
+            className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium border transition-all cursor-pointer select-none ${
+              saveStatus === 'saving'
+                ? 'bg-amber-50 text-amber-700 border-amber-200 shadow-2xs'
+                : saveStatus === 'error'
+                ? 'bg-rose-50 text-rose-700 border-rose-200'
+                : 'bg-emerald-50/80 hover:bg-emerald-100/80 text-emerald-700 border-emerald-200/80 shadow-2xs'
+            }`}
+            title={
+              saveStatus === 'saving'
+                ? '変更を自動保存中...'
+                : saveStatus === 'error'
+                ? '保存に失敗しました。クリックして再試行'
+                : `すべての変更が自動保存されています (最終保存: ${lastSavedTime})。クリックで今すぐ保存`
+            }
+          >
+            {saveStatus === 'saving' ? (
+              <>
+                <Loader2 className="w-3 h-3 text-amber-600 animate-spin" />
+                <span className="text-[11px] font-medium tracking-tight">保存中...</span>
+              </>
+            ) : saveStatus === 'error' ? (
+              <>
+                <AlertCircle className="w-3 h-3 text-rose-600" />
+                <span className="text-[11px] font-semibold tracking-tight">保存エラー</span>
+              </>
+            ) : (
+              <>
+                <Check className="w-3 h-3 text-emerald-600 stroke-[2.5]" />
+                <span className="text-[11px] font-medium tracking-tight">保存済み</span>
+              </>
+            )}
+          </button>
         </div>
 
         {/* Center: Device Switcher */}
