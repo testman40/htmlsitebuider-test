@@ -74,17 +74,17 @@ export const ExportModal: React.FC<ExportModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4 overflow-y-auto">
-      <div className="bg-white w-full max-w-4xl rounded-2xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden border border-slate-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 overflow-y-auto">
+      <div className="bg-white w-full max-w-4xl rounded-xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden border border-gray-200 font-sans">
         
         {/* Header with celebration */}
         <div className="relative px-6 py-5 bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 text-white flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/15 flex items-center justify-center backdrop-blur-sm">
+            <div className="w-10 h-10 rounded-lg bg-white/15 flex items-center justify-center backdrop-blur-xs">
               <Sparkles className="w-5 h-5 text-yellow-300" />
             </div>
             <div>
-              <h2 className="text-xl font-bold flex items-center gap-2">
+              <h2 className="text-lg font-bold flex items-center gap-2">
                 HTMLサイトが完成しました！
               </h2>
               <p className="text-xs text-blue-100">全{site.pages.length}ページのHTMLパッケージをダウンロードしてサーバーに公開しましょう</p>
@@ -92,7 +92,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white transition"
+            className="p-1.5 rounded-md bg-white/10 hover:bg-white/20 text-white transition"
             aria-label="閉じる"
           >
             <X className="w-5 h-5" />
@@ -102,26 +102,26 @@ export const ExportModal: React.FC<ExportModalProps> = ({
         <div className="flex-1 overflow-y-auto p-6 space-y-6">
 
           {/* Primary Action Card: Download Package */}
-          <div className="p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-indigo-50 border-2 border-blue-200 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="p-6 rounded-xl bg-blue-50/50 border border-blue-200 flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="space-y-2 text-center md:text-left">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-600 text-white text-xs font-bold shadow-sm">
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-blue-600 text-white text-xs font-semibold shadow-2xs">
                 <FolderArchive className="w-3.5 h-3.5" />
                 <span>推奨・一括ダウンロード</span>
               </div>
-              <h3 className="text-lg font-bold text-slate-800">
+              <h3 className="text-base font-bold text-gray-900">
                 完成サイトZIPパッケージ ({site.pages.length}ページ + 画像)
               </h3>
-              <p className="text-xs text-slate-600 max-w-lg leading-relaxed">
-                <code className="bg-white px-1.5 py-0.5 rounded font-bold text-blue-700">index.html</code>をはじめとする全HTMLファイルと、最適化済み画像、アップロード手順メモが1つのZIPにまとまっています。
+              <p className="text-xs text-gray-600 max-w-lg leading-relaxed">
+                <code className="bg-white px-1.5 py-0.5 rounded font-bold text-blue-700 border border-blue-100">index.html</code>をはじめとする全HTMLファイルと、最適化済み画像、アップロード手順メモが1つのZIPにまとまっています。
               </p>
             </div>
 
             <button
               onClick={handleDownloadZip}
               disabled={isExportingZip}
-              className="w-full md:w-auto px-8 py-3.5 bg-blue-600 hover:bg-blue-700 active:scale-98 text-white font-bold text-base rounded-xl shadow-lg shadow-blue-500/25 flex items-center justify-center gap-2 transition shrink-0"
+              className="w-full md:w-auto px-6 py-3 bg-blue-600 hover:bg-blue-700 active:scale-98 text-white font-semibold text-sm rounded-md shadow-sm flex items-center justify-center gap-2 transition shrink-0"
             >
-              <Download className="w-5 h-5" />
+              <Download className="w-4 h-4" />
               <span>{isExportingZip ? 'ZIP生成中...' : 'ZIPファイルをダウンロード'}</span>
             </button>
           </div>

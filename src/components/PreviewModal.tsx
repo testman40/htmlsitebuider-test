@@ -70,27 +70,27 @@ export const PreviewModal: React.FC<PreviewModalProps> = ({
         </div>
 
         {/* Center: Device Switcher (PC / Smartphone) */}
-        <div className="flex items-center bg-slate-800 p-1 rounded-xl border border-slate-700">
+        <div className="flex items-center bg-slate-800 p-0.5 rounded-lg border border-slate-700">
           <button
             onClick={() => setDeviceMode('pc')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
               deviceMode === 'pc'
-                ? 'bg-blue-600 text-white shadow-sm'
+                ? 'bg-blue-600 text-white shadow-xs'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            <Monitor className="w-4 h-4" />
+            <Monitor className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">PC表示</span>
           </button>
           <button
             onClick={() => setDeviceMode('mobile')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition ${
               deviceMode === 'mobile'
-                ? 'bg-blue-600 text-white shadow-sm'
+                ? 'bg-blue-600 text-white shadow-xs'
                 : 'text-slate-400 hover:text-white'
             }`}
           >
-            <Smartphone className="w-4 h-4" />
+            <Smartphone className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">スマホ表示 (375px)</span>
           </button>
         </div>
@@ -99,7 +99,7 @@ export const PreviewModal: React.FC<PreviewModalProps> = ({
         <div className="flex items-center gap-3">
           <button
             onClick={handleRefresh}
-            className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition"
+            className="p-1.5 text-slate-400 hover:text-white rounded-md hover:bg-slate-800 transition"
             title="プレビューを再読み込み"
           >
             <RefreshCw className="w-4 h-4" />
@@ -107,7 +107,7 @@ export const PreviewModal: React.FC<PreviewModalProps> = ({
 
           <button
             onClick={onExport}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs sm:text-sm rounded-xl flex items-center gap-2 shadow-md transition"
+            className="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm rounded-md flex items-center gap-2 shadow-xs transition"
           >
             <Download className="w-4 h-4" />
             <span>HTMLを生成する</span>
@@ -115,7 +115,7 @@ export const PreviewModal: React.FC<PreviewModalProps> = ({
 
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition"
+            className="p-1.5 text-slate-400 hover:text-white rounded-md hover:bg-slate-800 transition"
             aria-label="プレビューを閉じる"
           >
             <X className="w-5 h-5" />

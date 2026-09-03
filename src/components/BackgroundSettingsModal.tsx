@@ -81,53 +81,53 @@ export const BackgroundSettingsModal: React.FC<BackgroundSettingsModalProps> = (
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4 overflow-y-auto">
-      <div className="bg-white w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden border border-slate-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-4 overflow-y-auto">
+      <div className="bg-white w-full max-w-2xl rounded-xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden border border-gray-200 font-sans">
         
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+        <div className="px-5 py-3.5 border-b border-gray-200 flex items-center justify-between bg-gray-50">
           <div className="flex items-center gap-2">
-            <Sliders className="w-5 h-5 text-blue-600" />
-            <h3 className="font-bold text-base text-slate-800">サイト背景設定</h3>
+            <Sliders className="w-4 h-4 text-blue-600" />
+            <h3 className="font-bold text-sm text-gray-900">サイト背景設定</h3>
           </div>
-          <button onClick={onClose} className="p-1 rounded-lg text-slate-400 hover:text-slate-700">
+          <button onClick={onClose} className="p-1 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-200/60 transition">
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Main tabs */}
-        <div className="flex border-b border-slate-200 px-6 bg-white gap-2">
+        <div className="flex border-b border-gray-200 px-5 bg-white gap-2">
           <button
             onClick={() => setBgType('template_default')}
-            className={`py-3.5 px-3 text-xs font-bold border-b-2 flex items-center gap-1.5 transition ${
+            className={`py-3 px-3 text-xs font-semibold border-b-2 flex items-center gap-1.5 transition ${
               bgType === 'template_default'
                 ? 'border-blue-600 text-blue-600'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                : 'border-transparent text-gray-500 hover:text-gray-900'
             }`}
           >
-            <Palette className="w-4 h-4" />
+            <Palette className="w-3.5 h-3.5" />
             <span>テンプレート標準</span>
           </button>
           <button
             onClick={() => setBgType('image')}
-            className={`py-3.5 px-3 text-xs font-bold border-b-2 flex items-center gap-1.5 transition ${
+            className={`py-3 px-3 text-xs font-semibold border-b-2 flex items-center gap-1.5 transition ${
               bgType === 'image'
                 ? 'border-blue-600 text-blue-600'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                : 'border-transparent text-gray-500 hover:text-gray-900'
             }`}
           >
-            <ImageIcon className="w-4 h-4" />
+            <ImageIcon className="w-3.5 h-3.5" />
             <span>静止画 (アップロード)</span>
           </button>
           <button
             onClick={() => setBgType('video')}
-            className={`py-3.5 px-3 text-xs font-bold border-b-2 flex items-center gap-1.5 transition ${
+            className={`py-3 px-3 text-xs font-semibold border-b-2 flex items-center gap-1.5 transition ${
               bgType === 'video'
                 ? 'border-blue-600 text-blue-600'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                : 'border-transparent text-gray-500 hover:text-gray-900'
             }`}
           >
-            <Video className="w-4 h-4" />
+            <Video className="w-3.5 h-3.5" />
             <span>動く背景 (動画プリセット)</span>
           </button>
         </div>
@@ -280,16 +280,16 @@ export const BackgroundSettingsModal: React.FC<BackgroundSettingsModalProps> = (
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center">
+        <div className="px-5 py-3 bg-gray-50 border-t border-gray-200 flex justify-between items-center">
           <button
             onClick={onClose}
-            className="px-4 py-2 text-xs font-semibold text-slate-600 hover:text-slate-800"
+            className="px-3.5 py-1.5 text-xs font-semibold text-gray-600 hover:text-gray-900 rounded-md hover:bg-gray-100 transition"
           >
             キャンセル
           </button>
           <button
             onClick={handleSave}
-            className="px-6 py-2 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition shadow-sm"
+            className="px-4 py-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-md transition shadow-xs"
           >
             背景を適用する
           </button>

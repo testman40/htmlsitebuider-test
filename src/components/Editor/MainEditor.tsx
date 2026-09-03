@@ -18,7 +18,13 @@ import {
   ChevronDown,
   ArrowLeft,
   Settings,
-  Palette
+  Palette,
+  Layout,
+  ExternalLink,
+  Trash2,
+  Copy,
+  ArrowUp,
+  ArrowDown
 } from 'lucide-react';
 import { 
   SiteData, 
@@ -386,48 +392,59 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
     ? VIDEO_PRESETS.find(p => p.id === site.background.preset_id)
     : null;
 
+  const selectedBlock = currentPage.blocks.find(b => b.id === selectedBlockId);
+  const selectedBlockIndex = currentPage.blocks.findIndex(b => b.id === selectedBlockId);
+
   return (
-    <div className="min-h-screen bg-slate-100 flex flex-col select-none text-slate-800">
+    <div className="min-h-screen bg-[#F8FAFC] flex flex-col select-none text-gray-800 font-sans">
       
       {/* 1. TOP HEADER TOOLBAR */}
-      <header className="h-14 bg-white border-b border-slate-200 px-4 flex items-center justify-between z-30 sticky top-0 shadow-xs">
+      <header className="h-14 bg-white border-b border-gray-200 px-4 flex items-center justify-between z-30 sticky top-0 shrink-0 shadow-2xs">
         
         {/* Left: Brand & Back to templates */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3">
           <button
             onClick={onBackToGenres}
-            className="flex items-center gap-1 text-xs font-bold text-slate-500 hover:text-slate-800 p-1.5 rounded-lg hover:bg-slate-100 transition"
+            className="flex items-center gap-1.5 text-xs font-semibold text-gray-500 hover:text-gray-900 px-2 py-1.5 rounded-md hover:bg-gray-100 transition"
             title="ジャンル選択に戻る"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span className="hidden sm:inline">テンプレート一覧</span>
+            <span className="hidden sm:inline">テンプレート</span>
           </button>
 
-          <div className="h-4 w-px bg-slate-200 hidden sm:block" />
+          <div className="h-5 w-px bg-gray-200 hidden sm:block" />
 
-          {/* Editable Site Name */}
-          <input
-            type="text"
-            value={site.name}
-            onChange={(e) => setSite(prev => ({ ...prev, name: e.target.value }))}
-            className="font-bold text-sm text-slate-900 bg-transparent hover:bg-slate-50 px-2 py-1 rounded border border-transparent hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:outline-none transition max-w-[180px] sm:max-w-xs"
-            title="クリックしてサイト名を変更"
-          />
+          {/* App Logo */}
+          <div className="w-7 h-7 bg-blue-600 rounded-md flex items-center justify-center text-white shadow-xs shrink-0">
+            <Layout className="w-4 h-4" />
+          </div>
+
+          {/* Project Title Pill */}
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs text-gray-500 font-medium hidden md:inline">Project:</span>
+            <input
+              type="text"
+              value={site.name}
+              onChange={(e) => setSite(prev => ({ ...prev, name: e.target.value }))}
+              className="font-semibold text-xs text-gray-900 bg-gray-100 hover:bg-gray-200/70 px-2.5 py-1 rounded-md border border-gray-200 focus:border-blue-500 focus:bg-white focus:outline-none transition max-w-[130px] sm:max-w-[180px]"
+              title="クリックしてサイト名を変更"
+            />
+          </div>
 
           {/* Autosave badge */}
           {saveStatus === 'saving' && (
-            <span className="text-[11px] text-slate-400 font-medium animate-pulse hidden md:inline">
-              編集中を保存中...
+            <span className="text-[11px] text-gray-400 font-medium animate-pulse hidden md:inline">
+              保存中...
             </span>
           )}
           {saveStatus === 'saved' && (
-            <span className="text-[11px] text-emerald-600 font-bold flex items-center gap-1 hidden md:inline">
+            <span className="text-[11px] text-emerald-600 font-semibold flex items-center gap-1 hidden md:inline">
               <Check className="w-3.5 h-3.5" />
               <span>{saveMessage}</span>
             </span>
           )}
           {saveStatus === 'error' && (
-            <span className="text-[11px] text-rose-600 font-bold flex items-center gap-1 hidden md:inline">
+            <span className="text-[11px] text-rose-600 font-semibold flex items-center gap-1 hidden md:inline">
               <AlertCircle className="w-3.5 h-3.5" />
               <span>{saveMessage}</span>
             </span>
@@ -435,11 +452,11 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
         </div>
 
         {/* Center: Device Switcher */}
-        <div className="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
+        <div className="flex items-center bg-gray-100 p-1 rounded-md border border-gray-200">
           <button
             onClick={() => setDeviceView('pc')}
-            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition ${
-              deviceView === 'pc' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-500 hover:text-slate-800'
+            className={`flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium transition ${
+              deviceView === 'pc' ? 'bg-white text-gray-900 shadow-xs' : 'text-gray-500 hover:text-gray-900'
             }`}
             title="PC表示 (全幅)"
           >
@@ -448,8 +465,8 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
           </button>
           <button
             onClick={() => setDeviceView('mobile')}
-            className={`flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold transition ${
-              deviceView === 'mobile' ? 'bg-white text-slate-900 shadow-xs' : 'text-slate-500 hover:text-slate-800'
+            className={`flex items-center gap-1.5 px-3 py-1 rounded text-xs font-medium transition ${
+              deviceView === 'mobile' ? 'bg-white text-gray-900 shadow-xs' : 'text-gray-500 hover:text-gray-900'
             }`}
             title="スマホ表示 (375px)"
           >
@@ -463,7 +480,7 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
           
           <button
             onClick={() => handleSaveSite(false)}
-            className="p-2 text-slate-600 hover:text-slate-900 rounded-lg hover:bg-slate-100 transition"
+            className="p-2 text-gray-600 hover:text-gray-900 rounded-md hover:bg-gray-100 transition"
             title="手動保存"
           >
             <Save className="w-4 h-4" />
@@ -471,7 +488,7 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
 
           <button
             onClick={() => setShowPreview(true)}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 shadow-xs transition"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 shadow-xs transition"
           >
             <Eye className="w-4 h-4 text-blue-600" />
             <span className="hidden sm:inline">プレビュー</span>
@@ -479,13 +496,13 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
 
           <button
             onClick={() => setShowExport(true)}
-            className="inline-flex items-center gap-1.5 px-4 py-1.5 text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 rounded-xl shadow-md shadow-blue-500/20 transition active:scale-98"
+            className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-md shadow-xs transition active:scale-98"
           >
             <Download className="w-4 h-4" />
             <span>HTML生成</span>
           </button>
 
-          <div className="h-4 w-px bg-slate-200 mx-1" />
+          <div className="h-4 w-px bg-gray-200 mx-1 hidden sm:block" />
 
           {/* Guides / Help */}
           <button
@@ -493,7 +510,7 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
               setGuideInitialType('upload');
               setShowGuide(true);
             }}
-            className="p-2 text-slate-500 hover:text-blue-600 rounded-lg hover:bg-slate-100 transition"
+            className="p-2 text-gray-500 hover:text-blue-600 rounded-md hover:bg-gray-100 transition"
             title="公開マニュアル・PDFガイド"
           >
             <FileText className="w-4 h-4" />
@@ -502,8 +519,8 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
           {/* User Account / Magic Link */}
           <button
             onClick={() => setShowAuth(true)}
-            className={`p-2 rounded-lg transition ${
-              session ? 'text-emerald-600 bg-emerald-50 hover:bg-emerald-100' : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
+            className={`p-2 rounded-md transition ${
+              session ? 'text-emerald-600 bg-emerald-50 hover:bg-emerald-100' : 'text-gray-500 hover:text-gray-800 hover:bg-gray-100'
             }`}
             title={session ? `ログイン中: ${session.email}` : 'メールログイン'}
           >
@@ -515,21 +532,21 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
       </header>
 
       {/* 2. SECONDARY SUB-HEADER (Page switcher & Visual Settings) */}
-      <div className="bg-white border-b border-slate-200 px-6 py-2.5 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div className="bg-white border-b border-gray-200 px-4 py-2 flex flex-wrap items-center justify-between gap-3 text-xs shrink-0">
         
         {/* Active Page Switcher Tabs */}
         <div className="flex items-center gap-1.5 overflow-x-auto">
-          <span className="font-bold text-slate-400 mr-1 uppercase text-[10px] tracking-wider">ページ:</span>
+          <span className="font-bold text-gray-400 mr-1 uppercase text-[10px] tracking-wider">ページ:</span>
           {site.pages.map((p) => {
             const isCurrent = p.id === currentPage.id;
             return (
               <button
                 key={p.id}
                 onClick={() => handleSelectPage(p.id)}
-                className={`px-3 py-1 rounded-lg font-bold transition flex items-center gap-1.5 whitespace-nowrap ${
+                className={`px-3 py-1 rounded-md font-medium transition flex items-center gap-1.5 whitespace-nowrap ${
                   isCurrent
                     ? 'bg-blue-600 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
                 <span>{p.name}</span>
@@ -542,7 +559,7 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
 
           <button
             onClick={() => setShowPageManager(true)}
-            className="p-1.5 rounded-lg text-blue-600 hover:bg-blue-50 font-bold flex items-center gap-1 transition"
+            className="px-2.5 py-1 rounded-md text-blue-600 hover:bg-blue-50 font-medium flex items-center gap-1 border border-blue-200 transition"
             title="ページの追加・並べ替え・削除"
           >
             <Layers className="w-3.5 h-3.5" />
@@ -554,7 +571,7 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowBackgroundSettings(true)}
-            className="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg flex items-center gap-1.5 transition"
+            className="px-3 py-1 bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium rounded-md border border-gray-200 flex items-center gap-1.5 transition"
           >
             <Sliders className="w-3.5 h-3.5 text-blue-600" />
             <span>背景設定 ({site.background.type === 'video' ? '動画' : site.background.type === 'image' ? '静止画' : '標準'})</span>
@@ -565,7 +582,7 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
               setImagePickerTargetBlockId(null);
               setShowImageManager(true);
             }}
-            className="px-3 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-lg flex items-center gap-1.5 transition"
+            className="px-3 py-1 bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium rounded-md border border-gray-200 flex items-center gap-1.5 transition"
           >
             <ImageIcon className="w-3.5 h-3.5 text-emerald-600" />
             <span>画像マネージャー ({site.images.length}/20)</span>
@@ -574,39 +591,61 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
 
       </div>
 
-      {/* 3. MAIN WORKSPACE (Left sidebar blocks + Center canvas) */}
+      {/* 3. MAIN WORKSPACE (Left sidebar blocks + Center canvas + Right Inspector) */}
       <div className="flex-1 flex overflow-hidden">
         
         {/* Left Sidebar: Block Library */}
-        <aside className="w-72 bg-slate-50 border-r border-slate-200 p-4 overflow-y-auto hidden lg:block shrink-0 space-y-4">
+        <aside className="w-64 bg-white border-r border-gray-200 p-4 overflow-y-auto hidden lg:flex flex-col shrink-0 space-y-4">
           <BlockSelector onAddBlock={handleAddBlock} />
 
           {/* Beginner tips banner */}
-          <div className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-2xl text-xs space-y-2">
+          <div className="p-3 bg-blue-50/70 border border-blue-200/80 rounded-lg text-xs space-y-1.5 mt-auto">
             <div className="flex items-center gap-1.5 font-bold text-blue-900">
-              <Sparkles className="w-4 h-4 text-blue-600" />
-              <span>初心者のための操作のコツ</span>
+              <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+              <span>操作のコツ</span>
             </div>
-            <p className="text-slate-600 leading-relaxed text-[11px]">
-              キャンバス上のブロックをクリックすると、その場で文字や配置を直接編集できます。複数ページ間のリンクは自動的に連動します。
+            <p className="text-gray-600 leading-relaxed text-[11px]">
+              キャンバス上のブロックをクリックすると直接文字編集や並べ替えができます。右側のプロパティパネルでも調整可能です。
             </p>
           </div>
         </aside>
 
         {/* Center Workspace Canvas */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-8 flex justify-center bg-slate-200/70 relative">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-8 flex justify-center bg-[#E2E8F0] relative">
           
-          {/* Simulated Site Canvas */}
+          {/* Simulated Site Canvas Mockup Window */}
           <div
             className={`transition-all duration-300 ${
               deviceView === 'pc'
-                ? 'w-full max-w-4xl'
-                : 'w-[375px] max-w-full shadow-2xl rounded-3xl border-4 border-slate-800 overflow-hidden my-4'
+                ? 'w-full max-w-4xl bg-white shadow-2xl rounded-lg border border-slate-300/80 flex flex-col overflow-hidden my-auto'
+                : 'w-[375px] max-w-full shadow-2xl rounded-3xl border-8 border-slate-800 bg-white overflow-hidden my-4 flex flex-col'
             }`}
           >
+            {/* Browser Mockup Window Titlebar */}
+            {deviceView === 'pc' ? (
+              <div className="h-10 border-b border-gray-200 flex items-center justify-between px-4 bg-gray-50 shrink-0 select-none">
+                <div className="flex gap-1.5 items-center">
+                  <div className="w-2.5 h-2.5 bg-[#FF5F57] rounded-full border border-red-500/20" />
+                  <div className="w-2.5 h-2.5 bg-[#FEBC2E] rounded-full border border-yellow-500/20" />
+                  <div className="w-2.5 h-2.5 bg-[#28C840] rounded-full border border-green-500/20" />
+                </div>
+                <div className="text-[11px] font-mono text-gray-500 bg-white px-3 py-1 rounded border border-gray-200 shadow-2xs flex items-center gap-1.5">
+                  <span className="text-emerald-500 text-xs">🔒</span>
+                  <span>https://localhost:3000/{currentPage.slug === 'index' ? '' : `${currentPage.slug}.html`}</span>
+                </div>
+                <span className="text-[10px] font-mono text-gray-400 font-medium">1280 × 800</span>
+              </div>
+            ) : (
+              <div className="h-7 bg-slate-800 flex items-center justify-between px-6 text-[11px] text-slate-300 select-none">
+                <span>9:41</span>
+                <div className="w-16 h-3 bg-slate-900 rounded-full" />
+                <span>5G</span>
+              </div>
+            )}
+
             {/* Background container emulation */}
             <div 
-              className="min-h-[85vh] bg-white rounded-2xl shadow-sm border border-slate-300 flex flex-col relative overflow-hidden"
+              className="min-h-[80vh] bg-white flex flex-col relative overflow-hidden"
               style={{
                 background: site.background.type === 'image' && site.background.src 
                   ? `url('${site.background.src}') center/cover no-repeat` 
@@ -645,8 +684,8 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
               )}
 
               {/* Faux Header & Navigation (Auto-generated as per specs) */}
-              <header className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-slate-100 px-6 py-4 flex flex-wrap items-center justify-between gap-3 shadow-xs">
-                <span className="font-bold text-base text-slate-900 tracking-tight">
+              <header className="sticky top-0 z-10 bg-white/95 backdrop-blur-sm border-b border-gray-200 px-6 py-4 flex flex-wrap items-center justify-between gap-3 shadow-2xs">
+                <span className="font-bold text-base text-gray-900 tracking-tight">
                   {site.name}
                 </span>
                 
@@ -658,10 +697,10 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
                         key={p.id}
                         type="button"
                         onClick={() => handleSelectPage(p.id)}
-                        className={`text-xs font-semibold px-2.5 py-1 rounded-lg transition ${
+                        className={`text-xs font-medium px-2.5 py-1 rounded-md transition ${
                           isCur
-                            ? 'bg-blue-50 text-blue-700 font-bold'
-                            : 'text-slate-600 hover:bg-slate-100'
+                            ? 'bg-blue-50 text-blue-700 font-semibold'
+                            : 'text-gray-600 hover:bg-gray-100'
                         }`}
                       >
                         {p.name}
@@ -675,26 +714,26 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
               <div className="relative z-10 flex-1 p-6 sm:p-10 space-y-6">
                 
                 {/* Current Page Title Banner indicator */}
-                <div className="flex items-center justify-between pb-4 border-b border-slate-100/80">
+                <div className="flex items-center justify-between pb-4 border-b border-gray-200">
                   <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded-md uppercase">
+                    <span className="text-[10px] font-bold bg-blue-100 text-blue-800 px-2 py-0.5 rounded uppercase font-mono">
                       編集中ページ
                     </span>
-                    <h2 className="text-sm font-bold text-slate-700">
+                    <h2 className="text-sm font-semibold text-gray-800">
                       {currentPage.name} ({currentPage.slug === 'index' ? 'index.html' : `${currentPage.slug}.html`})
                     </h2>
                   </div>
                   <button
                     type="button"
                     onClick={() => setShowPageManager(true)}
-                    className="text-xs text-blue-600 hover:text-blue-800 font-bold"
+                    className="text-xs text-blue-600 hover:text-blue-800 font-medium"
                   >
-                    ページ名を変更
+                    ページ設定
                   </button>
                 </div>
 
                 {/* Blocks List */}
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {currentPage.blocks.map((block, index) => (
                     <BlockItemRenderer
                       key={block.id}
@@ -715,8 +754,8 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
                 </div>
 
                 {/* Add block CTA inside canvas */}
-                <div className="pt-6 border-t border-slate-100 flex flex-wrap items-center justify-center gap-2">
-                  <span className="text-xs font-bold text-slate-400 w-full text-center mb-1">
+                <div className="pt-6 border-t border-gray-200 flex flex-wrap items-center justify-center gap-2">
+                  <span className="text-xs font-semibold text-gray-400 w-full text-center mb-1">
                     パーツを新しく追加:
                   </span>
                   {(['heading', 'text', 'image', 'button', 'card_grid', 'contact_form'] as BlockType[]).map((t) => (
@@ -724,9 +763,9 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
                       key={t}
                       type="button"
                       onClick={() => handleAddBlock(t)}
-                      className="px-3 py-1.5 bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-700 rounded-xl text-xs font-bold border border-slate-200 transition flex items-center gap-1"
+                      className="px-3 py-1.5 bg-gray-50 hover:bg-blue-50 text-gray-700 hover:text-blue-700 rounded-md text-xs font-medium border border-gray-200 transition flex items-center gap-1.5 shadow-2xs"
                     >
-                      <Plus className="w-3 h-3" />
+                      <Plus className="w-3 h-3 text-blue-600" />
                       <span>
                         {t === 'heading' ? '見出し' :
                          t === 'text' ? 'テキスト' :
@@ -741,10 +780,10 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
               </div>
 
               {/* Faux Footer (Auto-generated as per specs) */}
-              <footer className="relative z-10 border-t border-slate-100 bg-white/90 px-6 py-6 text-center text-xs text-slate-400 mt-auto">
+              <footer className="relative z-10 border-t border-gray-200 bg-white/90 px-6 py-6 text-center text-xs text-gray-400 mt-auto">
                 <div className="flex justify-center gap-4 mb-2">
                   {site.pages.map(p => (
-                    <span key={p.id} className="text-slate-500 hover:underline cursor-pointer" onClick={() => handleSelectPage(p.id)}>
+                    <span key={p.id} className="text-gray-500 hover:underline cursor-pointer" onClick={() => handleSelectPage(p.id)}>
                       {p.name}
                     </span>
                   ))}
@@ -756,7 +795,192 @@ export const MainEditor: React.FC<MainEditorProps> = ({ initialSite, onBackToGen
           </div>
 
         </main>
+
+        {/* Right Sidebar: Style & Properties Inspector */}
+        <aside className="w-72 bg-white border-l border-gray-200 p-4 overflow-y-auto hidden xl:flex flex-col shrink-0 space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-gray-200">
+            <div className="flex items-center gap-2">
+              <Sliders className="w-4 h-4 text-blue-600" />
+              <h3 className="text-xs font-bold text-gray-900">プロパティ設定</h3>
+            </div>
+            <span className="text-[10px] bg-blue-50 text-blue-600 font-bold px-2 py-0.5 rounded font-mono">
+              {selectedBlock ? selectedBlock.type : 'ページ'}
+            </span>
+          </div>
+
+          {selectedBlock ? (
+            <div className="space-y-4 text-xs">
+              {/* Quick Actions for Selected Block */}
+              <div>
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block mb-2">
+                  ブロックの操作
+                </span>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    disabled={selectedBlockIndex <= 0}
+                    onClick={() => handleMoveBlock(selectedBlockIndex, 'up')}
+                    className="p-2 border border-gray-200 rounded-md bg-gray-50 hover:bg-white text-gray-700 disabled:opacity-30 flex items-center justify-center gap-1.5 transition font-medium"
+                  >
+                    <ArrowUp className="w-3.5 h-3.5" />
+                    <span>上へ移動</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    disabled={selectedBlockIndex >= currentPage.blocks.length - 1}
+                    onClick={() => handleMoveBlock(selectedBlockIndex, 'down')}
+                    className="p-2 border border-gray-200 rounded-md bg-gray-50 hover:bg-white text-gray-700 disabled:opacity-30 flex items-center justify-center gap-1.5 transition font-medium"
+                  >
+                    <ArrowDown className="w-3.5 h-3.5" />
+                    <span>下へ移動</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => handleDuplicateBlock(selectedBlockIndex)}
+                    className="p-2 border border-gray-200 rounded-md bg-gray-50 hover:bg-white text-gray-700 flex items-center justify-center gap-1.5 transition font-medium"
+                  >
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>複製する</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleDeleteBlock(selectedBlockIndex);
+                      setSelectedBlockId(null);
+                    }}
+                    className="p-2 border border-rose-200 rounded-md bg-rose-50/50 hover:bg-rose-50 text-rose-700 flex items-center justify-center gap-1.5 transition font-medium"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>削除する</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Block Details Info */}
+              <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg space-y-2">
+                <div className="flex justify-between items-center text-gray-500">
+                  <span>ブロックID:</span>
+                  <span className="font-mono text-[10px] text-gray-700">{selectedBlock.id.slice(0, 10)}...</span>
+                </div>
+                <div className="flex justify-between items-center text-gray-500">
+                  <span>タイプ:</span>
+                  <span className="font-bold text-gray-900">{selectedBlock.type}</span>
+                </div>
+                <div className="flex justify-between items-center text-gray-500">
+                  <span>位置:</span>
+                  <span className="font-mono text-gray-700">{selectedBlockIndex + 1} / {currentPage.blocks.length}</span>
+                </div>
+              </div>
+
+              <div className="p-3 bg-blue-50/50 border border-blue-100 rounded-lg text-gray-600 text-[11px] leading-relaxed">
+                キャンバス上のブロックをクリックすると、テキストやスタイルをその場で直接編集できます。
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setSelectedBlockId(null)}
+                className="w-full py-1.5 text-center text-xs text-gray-500 hover:text-gray-800 font-medium transition"
+              >
+                選択を解除
+              </button>
+            </div>
+          ) : (
+            <div className="space-y-4 text-xs">
+              <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg space-y-2.5">
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">
+                  ページ情報
+                </span>
+                <div className="flex justify-between items-center text-gray-600">
+                  <span>ページ名:</span>
+                  <span className="font-bold text-gray-900">{currentPage.name}</span>
+                </div>
+                <div className="flex justify-between items-center text-gray-600">
+                  <span>ファイル名:</span>
+                  <span className="font-mono text-gray-700">{currentPage.slug}.html</span>
+                </div>
+                <div className="flex justify-between items-center text-gray-600">
+                  <span>ブロック数:</span>
+                  <span className="font-bold text-blue-600">{currentPage.blocks.length} 個</span>
+                </div>
+                <div className="flex justify-between items-center text-gray-600">
+                  <span>背景タイプ:</span>
+                  <span className="font-medium text-gray-800">
+                    {site.background.type === 'video' ? '動画' : site.background.type === 'image' ? '静止画' : '標準'}
+                  </span>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <span className="text-[10px] font-bold text-gray-400 uppercase tracking-wider block">
+                  ショートカット
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setShowPageManager(true)}
+                  className="w-full p-2 border border-gray-200 rounded-md bg-gray-50 hover:bg-white text-gray-700 flex items-center justify-between transition font-medium"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <Layers className="w-3.5 h-3.5 text-blue-600" />
+                    <span>ページ一覧・順序変更</span>
+                  </span>
+                  <span className="text-gray-400">&gt;</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setShowBackgroundSettings(true)}
+                  className="w-full p-2 border border-gray-200 rounded-md bg-gray-50 hover:bg-white text-gray-700 flex items-center justify-between transition font-medium"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <Sliders className="w-3.5 h-3.5 text-blue-600" />
+                    <span>背景デザイン設定</span>
+                  </span>
+                  <span className="text-gray-400">&gt;</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setShowImageManager(true)}
+                  className="w-full p-2 border border-gray-200 rounded-md bg-gray-50 hover:bg-white text-gray-700 flex items-center justify-between transition font-medium"
+                >
+                  <span className="flex items-center gap-1.5">
+                    <ImageIcon className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>画像ライブラリ</span>
+                  </span>
+                  <span className="text-gray-400">&gt;</span>
+                </button>
+              </div>
+
+              <div className="p-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-500 text-[11px] leading-relaxed">
+                キャンバス上のパーツをクリックすると、プロパティや並べ替えの個別操作がここで行えます。
+              </div>
+            </div>
+          )}
+        </aside>
+
       </div>
+
+      {/* 4. BOTTOM STATUS BAR */}
+      <footer className="h-6 bg-gray-900 text-white flex items-center justify-between px-4 shrink-0 text-[10px] text-gray-400 font-mono select-none z-30">
+        <div className="flex items-center gap-3">
+          <span className="flex items-center gap-1.5 text-emerald-400">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span>ステータス: {saveStatus === 'saving' ? '保存中...' : '準備完了'}</span>
+          </span>
+          <span className="text-gray-700 hidden sm:inline">|</span>
+          <span className="truncate max-w-xs text-gray-300 hidden sm:inline">
+            階層: {site.name} &gt; {currentPage.name} &gt; {selectedBlock ? selectedBlock.type : '全体'}
+          </span>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className="hidden md:inline">オートセーブ: 有効</span>
+          <span className="text-gray-700 hidden md:inline">|</span>
+          <span>HTML Builder v2.4</span>
+        </div>
+      </footer>
 
       {/* 4. MODALS & POPUPS */}
 

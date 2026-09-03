@@ -47,19 +47,19 @@ export const BlockItemRenderer: React.FC<BlockItemRendererProps> = ({
   return (
     <div
       onClick={onSelect}
-      className={`relative group rounded-2xl transition-all duration-200 p-5 ${
+      className={`relative group transition-all duration-150 p-5 cursor-pointer ${
         isSelected
-          ? 'ring-2 ring-blue-600 bg-blue-50/20 shadow-md border border-blue-200'
-          : 'hover:bg-slate-50/80 border border-transparent hover:border-slate-200'
+          ? 'border-2 border-blue-500 bg-blue-50/10 rounded-lg shadow-xs'
+          : 'border-2 border-transparent hover:border-blue-400 hover:border-dashed rounded-lg'
       }`}
     >
       {/* Top Floating Actions Bar */}
       <div
-        className={`absolute -top-3.5 right-4 flex items-center gap-1 bg-white border border-slate-200 rounded-lg shadow-sm px-1.5 py-0.5 z-20 transition-opacity ${
+        className={`absolute -top-3.5 right-4 flex items-center gap-1 bg-white border border-gray-200 rounded-md shadow-sm px-2 py-0.5 z-20 transition-opacity ${
           isSelected ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
         }`}
       >
-        <span className="text-[10px] font-bold text-slate-400 px-1.5 border-r border-slate-200">
+        <span className="text-[10px] font-bold text-gray-500 px-1.5 border-r border-gray-200 uppercase font-mono">
           {block.type === 'heading' ? '見出し' :
            block.type === 'text' ? 'テキスト' :
            block.type === 'image' ? '画像' :
@@ -73,7 +73,7 @@ export const BlockItemRenderer: React.FC<BlockItemRendererProps> = ({
           type="button"
           disabled={!canMoveUp}
           onClick={(e) => { e.stopPropagation(); onMoveUp(); }}
-          className="p-1 text-slate-500 hover:text-blue-600 disabled:opacity-20 rounded"
+          className="p-1 text-gray-500 hover:text-blue-600 disabled:opacity-20 rounded hover:bg-gray-100 transition"
           title="上へ移動"
         >
           <ArrowUp className="w-3.5 h-3.5" />
@@ -83,7 +83,7 @@ export const BlockItemRenderer: React.FC<BlockItemRendererProps> = ({
           type="button"
           disabled={!canMoveDown}
           onClick={(e) => { e.stopPropagation(); onMoveDown(); }}
-          className="p-1 text-slate-500 hover:text-blue-600 disabled:opacity-20 rounded"
+          className="p-1 text-gray-500 hover:text-blue-600 disabled:opacity-20 rounded hover:bg-gray-100 transition"
           title="下へ移動"
         >
           <ArrowDown className="w-3.5 h-3.5" />
@@ -92,7 +92,7 @@ export const BlockItemRenderer: React.FC<BlockItemRendererProps> = ({
         <button
           type="button"
           onClick={(e) => { e.stopPropagation(); onDuplicate(); }}
-          className="p-1 text-slate-500 hover:text-blue-600 rounded"
+          className="p-1 text-gray-500 hover:text-blue-600 rounded hover:bg-gray-100 transition"
           title="複製"
         >
           <Copy className="w-3.5 h-3.5" />
@@ -101,7 +101,7 @@ export const BlockItemRenderer: React.FC<BlockItemRendererProps> = ({
         <button
           type="button"
           onClick={(e) => { e.stopPropagation(); onDelete(); }}
-          className="p-1 text-slate-500 hover:text-rose-600 rounded"
+          className="p-1 text-gray-500 hover:text-rose-600 rounded hover:bg-rose-50 transition"
           title="削除"
         >
           <Trash2 className="w-3.5 h-3.5" />

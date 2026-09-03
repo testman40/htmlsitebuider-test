@@ -31,62 +31,62 @@ export const GuideViewerModal: React.FC<GuideViewerModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm p-3 sm:p-6 overflow-y-auto">
-      <div className="bg-white w-full max-w-5xl rounded-2xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden border border-slate-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs p-3 sm:p-6 overflow-y-auto">
+      <div className="bg-white w-full max-w-5xl rounded-xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden border border-gray-200 font-sans">
         
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/80">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-200 bg-gray-50">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-sm">
-              <FileText className="w-5 h-5" />
+            <div className="w-9 h-9 rounded-lg bg-blue-600 text-white flex items-center justify-center shadow-xs">
+              <FileText className="w-4 h-4" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-slate-800">初心者向けWebサイト公開マニュアル (PDFガイド)</h2>
-              <p className="text-xs text-slate-500">HTMLビルダー公式 ・ レンタルサーバー4社対応</p>
+              <h2 className="text-base font-bold text-gray-900">初心者向けWebサイト公開マニュアル (PDFガイド)</h2>
+              <p className="text-xs text-gray-500">HTMLビルダー公式 ・ レンタルサーバー4社対応</p>
             </div>
           </div>
 
           <div className="flex items-center gap-2">
             <button
               onClick={handlePrint}
-              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition shadow-sm"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition shadow-xs"
               title="A4用紙のPDFとして保存または印刷できます"
             >
-              <Printer className="w-4 h-4 text-slate-600" />
+              <Printer className="w-3.5 h-3.5 text-gray-600" />
               <span>PDF保存 / 印刷</span>
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 text-slate-400 hover:text-slate-700 rounded-lg hover:bg-slate-200 transition"
+              className="p-1.5 text-gray-400 hover:text-gray-700 rounded-md hover:bg-gray-200/60 transition"
               aria-label="閉じる"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           </div>
         </div>
 
         {/* Tab Switcher */}
-        <div className="flex border-b border-slate-200 px-6 bg-white gap-4">
+        <div className="flex border-b border-gray-200 px-5 bg-white gap-4">
           <button
             onClick={() => setActiveTab('upload')}
-            className={`py-3.5 px-2 text-sm font-bold border-b-2 flex items-center gap-2 transition ${
+            className={`py-3 px-2 text-xs font-semibold border-b-2 flex items-center gap-2 transition ${
               activeTab === 'upload'
                 ? 'border-blue-600 text-blue-600'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                : 'border-transparent text-gray-500 hover:text-gray-900'
             }`}
           >
-            <span className="w-5 h-5 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xs">1</span>
+            <span className="w-4 h-4 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-[10px] font-bold">1</span>
             <span>【必須】サーバーアップロード手順書 (FTP解説)</span>
           </button>
           <button
             onClick={() => setActiveTab('domain')}
-            className={`py-3.5 px-2 text-sm font-bold border-b-2 flex items-center gap-2 transition ${
+            className={`py-3 px-2 text-xs font-semibold border-b-2 flex items-center gap-2 transition ${
               activeTab === 'domain'
                 ? 'border-blue-600 text-blue-600'
-                : 'border-transparent text-slate-500 hover:text-slate-800'
+                : 'border-transparent text-gray-500 hover:text-gray-900'
             }`}
           >
-            <span className="w-5 h-5 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs">2</span>
+            <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-[10px] font-bold">2</span>
             <span>【任意】独自ドメイン取得・DNS設定手順書</span>
           </button>
         </div>
